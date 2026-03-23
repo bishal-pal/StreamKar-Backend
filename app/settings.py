@@ -1,6 +1,6 @@
 import torch
 
-COLLECTION_NAME = "faq_collection"
+COLLECTION_NAME = "streamkar"
 BATCH_SIZE = 100
 
 DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"

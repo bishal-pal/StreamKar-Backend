@@ -21,8 +21,6 @@ def add_faq(faq: FAQ):
 
     return {"message": "FAQ added successfully"}
 
-BATCH_SIZE = 100
-
 @app.post("/bulk_add")
 def bulk_add(data: BulkFAQ):
     docs = [
@@ -47,9 +45,8 @@ def bulk_add(data: BulkFAQ):
 
 @app.post("/query")
 def query_faq(q: Query):
-    formatted_query = format_query(q.query)
-
-    scored_results = retrieve_scored_nodes(formatted_query, k=3, score_threshold=0.7)
+    
+    scored_results = retrieve_scored_nodes(q.query, k=3, score_threshold=0.7)
     docs = [doc for doc, _ in scored_results]
 
     if not docs:

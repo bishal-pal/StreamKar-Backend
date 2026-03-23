@@ -80,6 +80,7 @@ Responsibilities:
 - Create embedding model (`all-MiniLM-L6-v2`).
 - Detect embedding vector size dynamically.
 - Create Qdrant client and collection (if missing).
+- Initialize Qdrant client as `client`.
 - Expose `qdrant` store object for writes (`add_documents`).
 - Expose `retrieve_scored_nodes(query, k, score_threshold)` for scored retrieval.
 
@@ -135,7 +136,7 @@ Pydantic request schemas used by FastAPI:
 ### `app/settings.py`
 
 Central constants:
-- `COLLECTION_NAME = "faq_collection"`
+- `COLLECTION_NAME = "streamkar"`
 - `BATCH_SIZE = 100`
 - `DEVICE` auto-detected via `torch.backends.mps.is_available()`
 
@@ -192,6 +193,7 @@ Response:
 ```json
 {
 	"message": "Bulk FAQs added successfully",
+	"total_added": 2
 }
 ```
 
@@ -254,6 +256,7 @@ uv run uvicorn app.main:app --reload
 
 ## Future Improvements
 
+- Asynchronous Qdrant Client
 - Add cross-encoders / Node post-processors
 - Add auto-ingestion pipeline for dataset with cron-jobs and Redis queue
 - Add multi-tenant chat support.

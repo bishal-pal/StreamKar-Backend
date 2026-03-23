@@ -1,0 +1,161 @@
+{
+  "info": {
+    "_postman_id": "f739537f-5ae6-4b73-bf26-4d1096d80a29",
+    "name": "StreamKar FAQ Bot API",
+    "description": "Postman collection for StreamKar FAQ Bot FastAPI endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Add Single FAQ",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"question\": \"Where is the top-up option for beans?\",\n  \"answer\": \"Go to your profile page and tap Top-up to purchase beans.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/add_faq",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "add_faq"
+          ]
+        },
+        "description": "Adds a single FAQ document to Qdrant."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Success message is present', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.message).to.eql('FAQ added successfully');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bulk Add FAQs",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"faqs\": [\n    {\n      \"question\": \"What is StreamKar?\",\n      \"answer\": \"StreamKar is a live video and audio streaming social app.\"\n    },\n    {\n      \"question\": \"How do I buy beans?\",\n      \"answer\": \"Go to your profile page and tap Top-up to purchase beans.\"\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/bulk_add",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "bulk_add"
+          ]
+        },
+        "description": "Adds multiple FAQ documents in batches."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response contains total_added', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json).to.have.property('total_added');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Query FAQ",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"What is StreamKar?\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/query",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "query"
+          ]
+        },
+        "description": "Queries the FAQ bot and returns grounded answer with scored sources."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response contains answer', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json).to.have.property('answer');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
